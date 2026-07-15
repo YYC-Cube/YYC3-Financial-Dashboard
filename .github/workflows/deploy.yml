@@ -1,0 +1,337 @@
+name: 🚀 Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: "20"
+  PNPM_VERSION: "latest"
+
+jobs:
+  # Job 1: 质量检查 Quality Checks
+  quality:
+    name: 🔍 Quality Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔧 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: 📦 Install Dependencies
+        run: |
+          pnpm install --frozen-lockfile || pnpm install
+          echo "✅ Dependencies installed successfully"
+
+      - name: ✅ ESLint Check (Code Quality)
+        id: lint
+        run: |
+          echo "🔍 Running ESLint..."
+          pnpm lint 2>&1 | tee eslint-report.txt
+          LINT_EXIT_CODE=${PIPESTATUS[0]}
+
+          if [ $LINT_EXIT_CODE -eq 0 ]; then
+            echo "✅ ESLint passed - No errors found"
+            echo "lint_status=success" >> $GITHUB_OUTPUT
+          else
+            ERROR_COUNT=$(grep -c "error" eslint-report.txt || echo "0")
+            WARNING_COUNT=$(grep -c "warning" eslint-report.txt || echo "0")
+
+            if [ "$ERROR_COUNT" -gt 0 ]; then
+              echo "❌ ESLint failed - $ERROR_COUNT errors found"
+              echo "lint_status=failure" >> $GITHUB_OUTPUT
+              exit 1
+            else
+              echo "⚠️ ESLint passed with $WARNING_COUNT warnings"
+              echo "lint_status=warnings" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: 🔍 TypeScript Type Check
+        id: typecheck
+        run: |
+          echo "🔍 Running TypeScript type check..."
+          pnpm tsc --noEmit 2>&1 | tee tsc-report.txt
+          TSC_EXIT_CODE=${PIPESTATUS[0]}
+
+          if [ $TSC_EXIT_CODE -eq 0 ]; then
+            echo "✅ TypeScript type check passed"
+            echo "typecheck_status=success" >> $GITHUB_OUTPUT
+          else
+            ERROR_COUNT=$(grep -c "error TS" tsc-report.txt || echo "0")
+            echo "❌ TypeScript failed - $ERROR_COUNT type errors"
+            echo "typecheck_status=failure" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: 📊 Generate Quality Report
+        if: always()
+        run: |
+          echo "## 🔍 Quality Check Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status | Details |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|---------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **ESLint** | ${{ steps.lint.outputs.lint_status || 'skipped' }} | Code quality validation |" >> $GITHUB_STEP_SUMMARY
+          echo "| **TypeScript** | ${{ steps.typecheck.outputs.typecheck_status || 'skipped' }} | Type safety check |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "*Quality checks completed at $(date '+%Y-%m-%d %H:%M:%S UTC')*" >> $GITHUB_STEP_SUMMARY
+
+  # Job 2: 构建项目 Build Project
+  build:
+    name: 🏗️ Build & Deploy
+    runs-on: ubuntu-latest
+    needs: quality
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔧 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: 📦 Install Dependencies
+        run: |
+          pnpm install --frozen-lockfile || pnpm install
+          echo "✅ Dependencies installed"
+
+      - name: 🏗️ Build Project (Production)
+        id: build
+        run: |
+          echo "🚀 Building YYC³ Financial Dashboard for production..."
+          echo "⏱️ Build started at $(date)"
+
+          START_TIME=$(date +%s)
+          pnpm build 2>&1 | tee build-log.txt
+          END_TIME=$(date +%s)
+
+          BUILD_DURATION=$((END_TIME - START_TIME))
+
+          if [ ${PIPESTATUS[0]} -eq 0 ]; then
+            echo "✅ Build completed successfully in ${BUILD_DURATION}s"
+            echo "build_status=success" >> $GITHUB_OUTPUT
+            echo "build_duration=${BUILD_DURATION}" >> $GITHUB_OUTPUT
+
+            # Extract build metrics
+            COMPILE_TIME=$(grep "Compiled successfully" build-log.txt | grep -oP '\d+ms' || echo "N/A")
+            PAGE_COUNT=$(find ./out -name "*.html" ! -name "_*" | wc -l | tr -d ' ')
+
+            echo "compile_time=$COMPILE_TIME" >> $GITHUB_OUTPUT
+            echo "page_count=$PAGE_COUNT" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Build failed"
+            echo "build_status=failure" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: 📏 Analyze Bundle Size
+        if: success()
+        id: bundle
+        run: |
+          echo "� Analyzing bundle size..."
+
+          TOTAL_SIZE=$(du -sh ./out | cut -f1)
+          HTML_SIZE=$(du -sh ./out/*.html 2>/dev/null | tail -1 | cut -f1 || echo "0")
+          JS_SIZE=$(du -sh ./out/_next 2>/dev/null | cut -f1 || echo "0")
+
+          echo "total_size=$TOTAL_SIZE" >> $GITHUB_OUTPUT
+          echo "html_size=$HTML_SIZE" >> $GITHUB_OUTPUT
+          echo "js_size=$JS_SIZE" >> $GITHUB_OUTPUT
+
+          echo "📊 Bundle Analysis:"
+          echo "   Total Size: $TOTAL_SIZE"
+          echo "   HTML Files: $HTML_SIZE"
+          echo "   JS Assets: $JS_SIZE"
+
+      - name: �📊 Setup Pages
+        if: github.event_name != 'pull_request'
+        uses: actions/configure-pages@v5
+
+      - name: 📤 Upload Artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+          retention-days: 7
+
+      - name: 🌐 Deploy to GitHub Pages
+        if: github.event_name != 'pull_request'
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: 📈 Generate Build Report
+        if: always()
+        run: |
+          echo "## 🏗️ Build & Deployment Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Build Status** | ${{ steps.build.outputs.build_status || 'not_run' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Build Duration** | ${{ steps.build.outputs.build_duration || 'N/A }}s |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Compile Time** | ${{ steps.build.outputs.compile_time || 'N/A' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Pages Generated** | ${{ steps.build.outputs.page_count || 'N/A' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Total Bundle Size** | ${{ steps.bundle.outputs.total_size || 'N/A' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Deployment Status** | ${{ steps.deployment.outcome || 'skipped' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📍 Live URL" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.deployment.outcome }}" == "success" ]; then
+            echo "**[https://fd.yyc3.top](https://fd.yyc3.top) ✅**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "*Deployment skipped or pending*" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "*Build completed at $(date '+%Y-%m-%d %H:%M:%S UTC')*" >> $GITHUB_STEP_SUMMARY
+
+  # Job 3: 安全审计 Security Audit
+  security:
+    name: 🔒 Security Audit
+    runs-on: ubuntu-latest
+    needs: quality
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: 📦 Install Dependencies
+        run: pnpm install --frozen-lockfile || pnpm install
+
+      - name: 🔒 Run Security Audit
+        id: audit
+        run: |
+          echo "🔒 Running security audit..."
+          pnpm audit --audit-level=high 2>&1 | tee audit-report.txt
+          AUDIT_EXIT_CODE=${PIPESTATUS[0]}
+
+          if [ $AUDIT_EXIT_CODE -eq 0 ]; then
+            echo "✅ Security audit passed - No vulnerabilities found"
+            echo "audit_status=secure" >> $GITHUB_OUTPUT
+          else
+            VULN_COUNT=$(grep -c "vulnerability" audit-report.txt || echo "0")
+            echo "⚠️ Security issues found - $VULN_COUNT vulnerabilities"
+            echo "audit_status=vulnerable" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🛡️ Dependency Check
+        id: deps
+        run: |
+          echo "🛡️ Checking dependencies..."
+
+          OUTDATED_COUNT=$(pnpm outdated 2>/dev/null | tail -1 | awk '{print $1}' || echo "0")
+          DEP_COUNT=$(cat package.json | grep -c '"dependencies"' || echo "0")
+
+          echo "dep_count=$DEP_COUNT" >> $GITHUB_OUTPUT
+          echo "outdated_count=$OUTDATED_COUNT" >> $GITHUB_OUTPUT
+
+          echo "📦 Dependencies:"
+          echo "   Total packages: $DEP_COUNT"
+          echo "   Outdated: $OUTDATED_COUNT"
+
+      - name: � Security Report
+        if: always()
+        run: |
+          echo "## 🔒 Security Audit Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Vulnerability Scan** | ${{ steps.audit.outputs.audit_status || 'skipped' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Dependencies** | ${{ steps.deps.outputs.dep_count || 'N/A' }} total (${{ steps.deps.outputs.outdated_count || '0' }} outdated) |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "*Security scan completed at $(date '+%Y-%m-%d %H:%M:%S UTC')*" >> $GITHUB_STEP_SUMMARY
+
+  # Job 4: 部署通知 Deployment Notification
+  notify:
+    name: 📢 Deployment Summary
+    runs-on: ubuntu-latest
+    needs: [quality, build, security]
+    if: always() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
+    steps:
+      - name: 📊 Final Deployment Summary
+        run: |
+          echo "# 🚀 YYC³ Financial Dashboard Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📋 Pipeline Overview" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Stage | Status | Duration |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|----------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 🔍 **Quality Checks** | ${{ needs.quality.result }} | - |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🏗️ **Build & Deploy** | ${{ needs.build.result }} | ${{ needs.build.outputs.build_duration || 'N/A' }}s |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🔒 **Security Audit** | ${{ needs.security.result || 'skipped' }} | - |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          OVERALL_STATUS="✅ Success"
+          if [ "${{ needs.quality.result }}" == "failure" ] || [ "${{ needs.build.result }}" == "failure" ]; then
+            OVERALL_STATUS="❌ Failed"
+          elif [ "${{ needs.quality.result }}" == "cancelled" ] || [ "${{ needs.build.result }}" == "cancelled" ]; then
+            OVERALL_STATUS="⚠️ Cancelled"
+          fi
+
+          echo "## 🎯 Overall Status: $OVERALL_STATUS" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "$OVERALL_STATUS" = "✅ Success" ]; then
+            echo "### 🌐 Live URL" >> $GITHUB_STEP_SUMMARY
+            echo "**[https://fd.yyc3.top](https://fd.yyc3.top)** 🎉" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Triggered by**: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit**: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch**: \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Time**: $(date '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "*Powered by YYC³ CI/CD Pipeline v2.0*" >> $GITHUB_STEP_SUMMARY
