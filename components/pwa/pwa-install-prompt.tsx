@@ -9,8 +9,9 @@
  * @reference YYC3-多端适配-规范文档 §4.2 PWA 渐进式 Web 应用
  */
 
-import { useEffect, useState } from "react"
+import { useTranslation } from "@/lib/i18n/react"
 import { Download, X } from "lucide-react"
+import { useEffect, useState } from "react"
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>
@@ -22,6 +23,7 @@ const DISMISSAL_KEY = "yyc3-pwa-install-dismissed"
 export default function PWAInstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
   const [showPrompt, setShowPrompt] = useState(false)
+  const { t } = useTranslation()
 
   useEffect(() => {
     // 已安装则不显示
@@ -68,23 +70,23 @@ export default function PWAInstallPrompt() {
           </div>
           <div className="flex-1">
             <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-              安装 YYC³ 金融仪表盘
+              {t("pwa.installTitle")}
             </h3>
             <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
-              安装到桌面，离线也能使用
+              {t("pwa.installDesc")}
             </p>
             <div className="flex gap-2 mt-3">
               <button
                 onClick={handleInstall}
                 className="px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors"
               >
-                安装
+                {t("pwa.install")}
               </button>
               <button
                 onClick={handleDismiss}
                 className="px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
               >
-                稍后
+                {t("pwa.later")}
               </button>
             </div>
           </div>

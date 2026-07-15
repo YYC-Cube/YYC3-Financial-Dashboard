@@ -8,12 +8,13 @@
 
 "use client"
 
+import LanguageSwitcher from "@/components/i18n/language-switcher"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import Image from "next/image"
 import { Bell, ChevronRight } from "lucide-react"
-import Profile01 from "./profile-01"
+import Image from "next/image"
 import Link from "next/link"
 import { ThemeToggle } from "../theme-toggle"
+import Profile01 from "./profile-01"
 
 interface BreadcrumbItem {
   label: string
@@ -55,6 +56,7 @@ export default function TopNav() {
         </button>
 
         <ThemeToggle />
+        <LanguageSwitcher />
 
         <DropdownMenu>
           <DropdownMenuTrigger className="focus:outline-none">

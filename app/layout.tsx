@@ -1,15 +1,16 @@
 /**
  * @file 根布局组件
- * @description 应用的全局布局组件，配置默认语言、主题提供者和 PWA
+ * @description 应用的全局布局组件，配置默认语言、主题提供者、PWA 和 i18n
  * @author YYC³
- * @version 1.1.0
+ * @version 1.2.0
  * @created 2025-09-15
- * @updated 2026-07-15 集成 PWA + SEO 元数据
+ * @updated 2026-07-15 集成 PWA + SEO 元数据 + i18n 多语言
  */
 
 import PWAInstallPrompt from "@/components/pwa/pwa-install-prompt"
 import PWARegister from "@/components/pwa/pwa-register"
 import { ThemeProvider } from "@/components/theme-provider"
+import { I18nApp } from "@/lib/i18n/app"
 import type { Metadata, Viewport } from "next"
 import "./globals.css"
 
@@ -75,9 +76,11 @@ export default function RootLayout({
     <html lang="zh-CN" suppressHydrationWarning>
       <body className="font-sans antialiased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
-          <PWARegister />
-          <PWAInstallPrompt />
+          <I18nApp>
+            {children}
+            <PWARegister />
+            <PWAInstallPrompt />
+          </I18nApp>
         </ThemeProvider>
       </body>
     </html>

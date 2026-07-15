@@ -7,10 +7,12 @@
  * @updated 2026-07-15 解耦数据层，使用统一类型
  */
 
-import { cn } from "@/lib/utils"
-import { ArrowUpRight, ArrowDownLeft, Wallet, SendHorizontal, QrCode, Plus, ArrowRight, CreditCard } from "lucide-react"
 import { accounts as defaultAccounts, dashboardSummary } from "@/data/accounts"
+import { cn } from "@/lib/utils"
 import type { Account } from "@/types/financial"
+import { ArrowUpRight, ArrowDownLeft, Wallet, SendHorizontal, QrCode, Plus, ArrowRight, CreditCard } from "lucide-react"
+import AddTransactionDialog from "@/components/forms/add-transaction-dialog"
+import { useTranslation } from "@/lib/i18n/react"
 
 interface List01Props {
   totalBalance?: string
@@ -19,6 +21,8 @@ interface List01Props {
 }
 
 export default function List01({ totalBalance = dashboardSummary.totalBalance, accounts = defaultAccounts, className }: List01Props) {
+  const { t } = useTranslation()
+
   return (
     <div
       className={cn(
@@ -31,14 +35,14 @@ export default function List01({ totalBalance = dashboardSummary.totalBalance, a
     >
       {/* Total Balance Section */}
       <div className="p-4 border-b border-zinc-100 dark:border-zinc-800">
-        <p className="text-xs text-zinc-600 dark:text-zinc-400">Total Balance</p>
+        <p className="text-xs text-zinc-600 dark:text-zinc-400">{t("account.totalBalance")}</p>
         <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">{totalBalance}</h1>
       </div>
 
       {/* Accounts List */}
       <div className="p-3">
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-xs font-medium text-zinc-900 dark:text-zinc-100">Your Accounts</h2>
+          <h2 className="text-xs font-medium text-zinc-900 dark:text-zinc-100">{t("account.title")}</h2>
         </div>
 
         <div className="space-y-1">
