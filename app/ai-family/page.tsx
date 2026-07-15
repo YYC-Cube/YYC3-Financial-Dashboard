@@ -10,11 +10,11 @@
  * @reference docs/AI-Dev/AIAssistant/AIAssistant.tsx — 8 人格
  */
 
-import { useState } from "react"
-import { Bot, Sparkles } from "lucide-react"
-import { useRouter } from "next/navigation"
 import { FAMILY_PERSONAS } from "@/lib/ai-family/data"
 import { eventBus, Events } from "@/lib/ai-family/event-bus"
+import { Bot, Sparkles } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export default function FamilyHomePage() {
   const router = useRouter()
@@ -35,7 +35,7 @@ export default function FamilyHomePage() {
 
       <div className="text-center mb-12">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#00FF88] to-[#00d4ff] flex items-center justify-center shadow-[0_0_30px_rgba(0,255,136,0.3)]">
+          <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-[#00FF88] to-[#00d4ff] flex items-center justify-center shadow-[0_0_30px_rgba(0,255,136,0.3)]">
             <Bot className="w-6 h-6 text-white" />
           </div>
         </div>
@@ -62,7 +62,7 @@ export default function FamilyHomePage() {
             fill="none" stroke="rgba(0,255,136,0.08)" strokeWidth={1} />
         </svg>
 
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-gradient-to-br from-[#00FF88] to-[#00d4ff] flex items-center justify-center shadow-[0_0_40px_rgba(0,255,136,0.2)] z-10">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-linear-to-br from-[#00FF88] to-[#00d4ff] flex items-center justify-center shadow-[0_0_40px_rgba(0,255,136,0.2)] z-10">
           <Sparkles className="w-8 h-8 text-white" />
         </div>
 

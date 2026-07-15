@@ -66,7 +66,7 @@ export default function VoicePage() {
             </p>
           </div>
 
-          <div className="rounded-xl p-4 min-h-[80px]" style={{ background: "rgba(0,0,0,0.2)", border: "1px solid rgba(0,255,136,0.06)" }}>
+          <div className="rounded-xl p-4 min-h-20" style={{ background: "rgba(0,0,0,0.2)", border: "1px solid rgba(0,255,136,0.06)" }}>
             <p className="text-[rgba(0,255,136,0.3)] text-sm">{transcript || "识别结果将显示在这里..."}</p>
           </div>
         </div>

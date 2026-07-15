@@ -9,17 +9,17 @@
 
 "use client"
 
+import { useTranslation } from "@/lib/i18n/react"
 import { Calendar, CreditCard, PieChart, TrendingUp, Wallet } from "lucide-react"
 import dynamic from "next/dynamic"
 import List01 from "./list-01"
 import List02 from "./list-02"
 import List03 from "./list-03"
-import { useTranslation } from "@/lib/i18n/react"
 
 /** 动态导入图表组件，减少初始 bundle 大小 */
 const SpendingTrendChart = dynamic(() => import("@/components/charts/spending-trend-chart"), {
   loading: () => (
-    <div className="h-[280px] flex items-center justify-center text-sm text-zinc-400">
+    <div className="h-70 flex items-center justify-center text-sm text-zinc-400">
       ...
     </div>
   ),
@@ -28,7 +28,7 @@ const SpendingTrendChart = dynamic(() => import("@/components/charts/spending-tr
 
 const ExpenseCategoryChart = dynamic(() => import("@/components/charts/expense-category-chart"), {
   loading: () => (
-    <div className="h-[200px] flex items-center justify-center text-sm text-zinc-400">
+    <div className="h-50 flex items-center justify-center text-sm text-zinc-400">
       ...
     </div>
   ),
