@@ -46,6 +46,8 @@ export const zhCN: TranslationMap = {
     aiFamily: "AI Family",
     familyHome: "中枢首页",
     familyChat: "家群对话",
+    familyMusic: "音乐空间",
+    familyVoice: "语音系统",
     monitorCenter: "监控中心",
     opsCenter: "运维中心",
     aiDecision: "AI 决策",

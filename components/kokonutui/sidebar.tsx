@@ -22,6 +22,8 @@ import {
   Home,
   Menu,
   MessagesSquare,
+  Mic,
+  Music,
   Receipt,
   Settings,
   Shield,
@@ -204,6 +206,12 @@ export default function Sidebar() {
                   </NavItem>
                   <NavItem href="/ai-family/chat" icon={MessagesSquare} color="emerald">
                     {t("nav.familyChat")}
+                  </NavItem>
+                  <NavItem href="/ai-family/music" icon={Music} color="emerald">
+                    {t("nav.familyMusic")}
+                  </NavItem>
+                  <NavItem href="/ai-family/voice" icon={Mic} color="emerald">
+                    {t("nav.familyVoice")}
                   </NavItem>
                   <NavItem href="/dashboard#monitor" icon={Activity} color="emerald">
                     {t("nav.monitorCenter")}

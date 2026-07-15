@@ -47,6 +47,8 @@ export const ptBR: TranslationMap = {
     aiFamily: "AI Family",
     familyHome: "Início Família",
     familyChat: "Chat Família",
+    familyMusic: "Espaço Musical",
+    familyVoice: "Sistema de Voz",
     monitorCenter: "Centro de Monitoramento",
     opsCenter: "Centro de Operações",
     aiDecision: "Decisão IA",

@@ -47,6 +47,8 @@ export const ko: TranslationMap = {
     aiFamily: "AI Family",
     familyHome: "패밀리 홈",
     familyChat: "패밀리 채팅",
+    familyMusic: "음악 공간",
+    familyVoice: "음성 시스템",
     monitorCenter: "모니터링 센터",
     opsCenter: "운영 센터",
     aiDecision: "AI 의사결정",

@@ -47,6 +47,8 @@ export const de: TranslationMap = {
     aiFamily: "AI Family",
     familyHome: "Family Home",
     familyChat: "Family Chat",
+    familyMusic: "Musikraum",
+    familyVoice: "Sprachsystem",
     monitorCenter: "Überwachungszentrum",
     opsCenter: "Betriebszentrum",
     aiDecision: "KI-Entscheidung",

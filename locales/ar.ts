@@ -47,6 +47,8 @@ export const ar: TranslationMap = {
     aiFamily: "AI Family",
     familyHome: "الصفحة الرئيسية",
     familyChat: "محادثة العائلة",
+    familyMusic: "مساحة الموسيقى",
+    familyVoice: "نظام الصوت",
     monitorCenter: "مركز المراقبة",
     opsCenter: "مركز العمليات",
     aiDecision: "قرار الذكاء الاصطناعي",

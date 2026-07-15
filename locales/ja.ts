@@ -47,6 +47,8 @@ export const ja: TranslationMap = {
     aiFamily: "AI Family",
     familyHome: "ファミリーホーム",
     familyChat: "ファミリーチャット",
+    familyMusic: "音楽スペース",
+    familyVoice: "音声システム",
     monitorCenter: "監視センター",
     opsCenter: "運用センター",
     aiDecision: "AI 意思決定",

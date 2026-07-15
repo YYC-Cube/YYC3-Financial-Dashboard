@@ -47,6 +47,8 @@ export const zhTW: TranslationMap = {
     aiFamily: "AI Family",
     familyHome: "中樞首頁",
     familyChat: "家群對話",
+    familyMusic: "音樂空間",
+    familyVoice: "語音系統",
     monitorCenter: "監控中心",
     opsCenter: "運維中心",
     aiDecision: "AI 決策",
