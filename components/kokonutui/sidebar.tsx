@@ -100,7 +100,7 @@ export default function Sidebar() {
           >
             <div className="flex items-center gap-3">
               <Image
-                src="/yyc3/Web App/android-chrome-192.png"
+                src="/yyc3-icons/web/icon-192.png"
                 alt="YYC³"
                 width={32}
                 height={32}
