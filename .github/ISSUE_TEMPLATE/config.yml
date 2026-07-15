@@ -1,0 +1,17 @@
+blank_issues_enabled: true
+contact_links:
+  - name: "🐛 Bug Report"
+    url: "https://github.com/YYC-Cube/YYC3-Financial-Dashboard/issues/new?template=bug_report.md"
+    about: "报告一个 Bug 或问题 - Report a bug or issue"
+  - name: "✨ Feature Request"
+    url: "https://github.com/YYC-Cube/YYC3-Financial-Dashboard/issues/new?template=feature_request.md"
+    about: "提议新功能或改进 - Suggest a new feature or improvement"
+  - name: "🔒 Security Issue (Private)"
+    url: "https://github.com/YYC-Cube/YYC3-Financial-Dashboard/security/advisories/new"
+    about: "报告安全漏洞(私密渠道) - Report security vulnerability (private channel)"
+  - name: "💬 Discussion / Question"
+    url: "https://github.com/YYC-Cube/YYC3-Financial-Dashboard/discussions/new"
+    about: "提问或讨论 - Ask questions or start discussions"
+  - name: "📚 Documentation Issue"
+    url: "https://github.com/YYC-Cube/YYC3-Financial-Dashboard/issues/new?labels=documentation&title=Docs%3A+"
+    about: "文档错误或改进建议 - Documentation errors or improvements"

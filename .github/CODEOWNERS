@@ -1,0 +1,90 @@
+# CODEOWNERS 文件
+# 定义文件/目录的所有者，用于自动分配 PR 审查者
+# Defines owners for files/directories, used to auto-assign PR reviewers
+
+# 全局默认所有者 Global default owner (fallback)
+* @YYC-Cube
+
+# 根目录文件 Root directory files
+/.github/*                    @YYC-Cube
+/*.md                         @YYC-Cube
+/LICENSE                      @YYC-Cube
+/.editorconfig                @YYC-Cube
+/.gitignore                   @YYC-Cube
+/package.json                 @YYC-Cube
+/pnpm-lock.yaml               @YYC-Cube
+/next.config.mjs              @YYC-Cube
+/tailwind.config.ts           @YYC-Cube
+/tsconfig.json                @YYC-Cube
+/components.json              @YYC-Cube
+
+# GitHub 配置 GitHub configuration
+.github/workflows/*           @YYC-Cube
+.github/ISSUE_TEMPLATE/*      @YYC-Cube
+.github/PULL_REQUEST_TEMPLATE.md  @YYC-Cube
+.github/FUNDING.yml           @YYC-Cube
+.github/dependabot.yml        @YYC-Cube
+.github/SECURITY.md           @YYC-Cube
+
+# 应用代码 Application code
+app/**                        @YYC-Cube
+components/**                 @YYC-Cube
+lib/**                         @YYC-Cube
+hooks/**                       @YYC-Cube
+utils/**                       @YYC-Cube
+types/**                       @YYC-Cube
+contexts/**                    @YYC-Cube
+stores/**                      @YYC-Cube
+
+# UI 组件 UI components
+components/ui/**              @YYC-Cube
+components/kokonutui/**       @YYC-Cube
+
+# 公共资源 Public assets
+public/**                     @YYC-Cube
+
+# 样式文件 Style files
+app/globals.css               @YYC-Cube
+**/*.css                      @YYC-Cube
+
+# 配置文件 Configuration files
+**/*.config.*                 @YYC-Cube
+**/*.env.example              @YYC-Cube
+
+# 测试文件 Test files
+__tests__/**                  @YYC-Cube
+**/*.test.*                   @YYC-Cube
+**/*.spec.*                   @YYC-Cube
+jest.config.*                 @YYC-Cube
+vitest.config.*               @YYC-Cube
+playwright.config.*           @YYC-Cube
+
+# 文档 Documentation
+docs/**                       @YYC-Cube
+*.md                          @YYC-Cube
+
+# 安全相关 Security related
+SECURITY.md                   @YYC-Cube
+**/security/**                @YYC-Cube
+**/*.security.*               @YYC-Cube
+
+# 部署相关 Deployment related
+Dockerfile                    @YYC-Cube
+docker-compose.*              @YYC-Cube
+vercel.json                   @YYC-Cube
+netlify.toml                  @YYC-Cube
+**/deploy/**                  @YYC-Cube
+
+# VS Code 配置 VS Code configuration
+.vscode/**                    @YYC-Cube
+
+# 忽略的文件 Ignored files (no reviewers needed)
+node_modules/**               @YYC-Cube
+.next/**                      @YYC-Cube
+out/**                        @YYC-Cube
+dist/**                       @YYC-Cube
+build/**                      @YYC-Cube
+*.log                         @YYC-Cube
+.env                          @YYC-Cube
+.env.local                    @YYC-Cube
+.DS_Store                    @YYC-Cube

@@ -1,0 +1,54 @@
+# GitHub Actions Labeler Configuration
+# 当文件更改时自动分配标签
+# Automatically assign labels based on changed files
+
+# Bug 相关文件 Bug-related files
+'bug':
+  - '**/components/ui/chart.tsx'
+  - '**/*.test.ts'
+  - '**/*.spec.ts'
+
+# 文档相关 Documentation-related files
+'documentation':
+  - any: ['**/*.md', 'docs/**']
+    changed:
+      only: true
+
+# UI 组件 UI components
+'scope: ui':
+  - any: ['app/**', 'components/**/*.tsx', 'public/**/*.{png,jpg,svg}']
+
+# API 相关 API related
+'scope: api':
+  - any: ['app/api/**', 'lib/api/**', 'services/**']
+
+# 配置文件 Configuration files
+'scope: config':
+  - any: [
+      '*.config.*',
+      '.env*',
+      'next.config.*',
+      'tailwind.config.*',
+      'tsconfig.json',
+      'package.json'
+    ]
+
+# 测试文件 Test files
+'scope: tests':
+  - any: ['**/*.test.*', '**/*.spec.*', '__tests__/**', 'jest.config.*', 'vitest.config.*']
+
+# 文档文件 Documentation files
+'scope: docs':
+  - any: ['**/*.md', 'README*', 'CHANGELOG*', 'CONTRIBUTING*', 'LICENSE*']
+
+# 部署相关 Deployment related
+'scope: deployment':
+  - any: ['.github/workflows/**', 'Dockerfile', 'docker-compose.*', 'vercel.json']
+
+# 依赖更新 Dependency updates
+'dependencies':
+  - any: ['package.json', 'pnpm-lock.yaml', 'pnpm-lock.yml']
+
+# GitHub Actions
+'github-actions':
+  - any: ['.github/workflows/**', '.github/actions/**']

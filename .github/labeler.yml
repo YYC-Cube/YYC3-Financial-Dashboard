@@ -1,0 +1,113 @@
+name: Label Configuration
+description: YYC³ Financial Dashboard Issue 和 PR 标签配置
+
+labels:
+  # 状态标签 Status Labels
+  - name: "status: needs-triage"
+    color: "#ededed"
+    description: "需要分类 | Needs triage"
+  - name: "status: in-progress"
+    color: "#ff9800"
+    description: "进行中 | Work in progress"
+  - name: "status: ready-for-review"
+    color: "#2196f3"
+    description: "等待审查 | Ready for review"
+  - name: "status: blocked"
+    color: "#f44336"
+    description: "被阻塞 | Blocked by another issue"
+
+  # 类型标签 Type Labels
+  - name: "type: bug"
+    color: "#d73a4a"
+    description: "错误报告 | Something isn't working"
+  - name: "type: enhancement"
+    color: "#a2eeef"
+    description: "功能增强 | New feature or request"
+  - name: "type: documentation"
+    color: "#0075ca"
+    description: "文档改进 | Improvements or additions to documentation"
+  - name: "type: question"
+    color: "#d876e3"
+    description: "问题咨询 | Further information is requested"
+  - name: "type: performance"
+    color: "#fbca04"
+    description: "性能优化 | Performance improvements"
+  - name: "type: security"
+    color: "#b60205"
+    description: "安全问题 | Security issues or vulnerabilities"
+
+  # 优先级标签 Priority Labels
+  - name: "priority: critical"
+    color: "#b60205"
+    description: "紧急 | Must fix immediately"
+  - name: "priority: high"
+    color: "#d93f0b"
+    description: "高优先级 | Should fix soon"
+  - name: "priority: medium"
+    color: "#fbca04"
+    description: "中优先级 | Fix when possible"
+  - name: "priority: low"
+    color: "#0e8a16"
+    description: "低优先级 | Nice to have"
+
+  # 范围标签 Scope Labels
+  - name: "scope: ui"
+    color: "#84b6eb"
+    description: "UI/UX 相关 | Related to user interface"
+  - name: "scope: api"
+    color: "#5319e7"
+    description: "API 相关 | Related to API"
+  - name: "scope: config"
+    color: "#c2e0c6"
+    description: "配置相关 | Related to configuration"
+  - name: "scope: tests"
+    color: "#bfd4f2"
+    description: "测试相关 | Related to testing"
+  - name: "scope: docs"
+    color: "#fef2c0"
+    description: "文档相关 | Related to documentation"
+  - name: "scope: deployment"
+    color: "#e99695"
+    description: "部署相关 | Related to deployment"
+
+  # 自动化标签 Automation Labels
+  - name: "automated"
+    color: "#0052cc"
+    description: "自动生成 | Automatically generated"
+  - name: "dependencies"
+    color: "#0366d6"
+    description: "依赖更新 | Pull requests that update dependencies"
+  - name: "github-actions"
+    color: "#000000"
+    description: "GitHub Actions | GitHub Actions workflows"
+
+  # 特殊标签 Special Labels
+  - name: "good first issue"
+    color: "#7057ff"
+    description: "适合新手 | Good for newcomers"
+  - name: "help wanted"
+    color: "#008672"
+    description: "需要帮助 | Extra attention is needed"
+  - name: "wontfix"
+    description: "不修复 | This will not be worked on"
+  - name: "duplicate"
+    color: "#cfd3d7"
+    description: "重复问题 | This issue or pull request already exists"
+  - name: "invalid"
+    description: "无效 | Doesn't seem right"
+
+# 配置说明 Configuration Notes:
+#
+# 这些标签用于更好地组织和跟踪 Issues 和 Pull Requests。
+# These labels are used to better organize and track Issues and Pull Requests.
+#
+# 使用建议 Usage Recommendations:
+# 1. 每个Issue/PR至少应该有一个类型标签 (type:*)
+# 2. 每个Issue/PR应该有一个优先级标签 (priority:*)
+# 3. 可以有多个范围标签 (scope:*)
+# 4. 使用状态标签追踪进度 (status:*)
+#
+# 标签组合示例 Example Combinations:
+# - Bug修复: type:bug + priority:high + scope:ui + status:in-progress
+# - 新功能: type:enhancement + priority:medium + scope:api + status:needs-triage
+# - 安全问题: type:security + priority:critical + status:blocked

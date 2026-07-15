@@ -1,0 +1,60 @@
+# These are supported funding model platforms
+
+github: # Replace with up to 4 GitHub Sponsors-enabled usernames e.g., [user1, user2]
+  - YYC-Cube
+
+patreon: # Replace with a single Patreon username
+  - yyc3
+
+open_collective: # Replace with a single Open Collective username
+  - yyc3
+
+ko_fi: # Replace with a single Ko-fi username
+  - yyc3
+
+tidelift: # Replace with a single Tidelift platform-name/package-name e.g., npm/babel
+  - npm/yyc3-project
+
+community_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry
+  - yyc3-financial-dashboard
+
+liberapay: # Replace with a single Liberapay username
+  - YYC-Cube
+
+issuehunt: # Replace with a single IssueHunt username
+  - YYC-Cube
+
+otechie: # Replace with a single Otechie username
+  - yyc3
+
+custom:
+  - https://paypal.me/YYC3
+  - https://buymeacoffee.com/yyc3
+  - https://afdian.net/a/yyc3
+
+# 赞助说明 | Sponsorship Information
+#
+# 感谢您考虑赞助 YYC³ Financial Dashboard 项目！
+# Thank you for considering sponsoring the YYC³ Financial Dashboard project!
+#
+# 您的赞助将用于：
+# Your sponsorship will be used for:
+# - 🛠️ 维护和改进项目代码 | Maintaining and improving codebase
+# - 📚 编写和维护文档 | Writing and maintaining documentation
+# - 🧪 添加测试用例 | Adding test cases
+# - 🎨 改进 UI/UX 设计 | Improving UI/UX design
+# - ☁️ 云服务费用（CI/CD、部署等）| Cloud services (CI/CD, deployment, etc.)
+# - 📊 第三方服务订阅（监控、分析等）| Third-party service subscriptions (monitoring, analytics, etc.)
+#
+# 所有赞助者都将在项目的 README.md 和网站中获得致谢。
+# All sponsors will be acknowledged in the project's README.md and website.
+#
+# 特别赞助者将获得：
+# Special sponsors will receive:
+# - 🏆 在项目 README 中特别标注 | Special mention in project README
+# - 📧 定期项目进展报告 | Regular project progress reports
+# - 💬 优先技术支持 | Priority technical support
+# - 🎁 YYC³ 周边礼品 | YYC³ merchandise gifts
+#
+# 再次感谢您的支持！❤️
+# Thank you again for your support! ❤️
