@@ -6,13 +6,11 @@
  * @created 2025-09-15
  */
 
-import { Inter } from "next/font/google"
-import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import type { Metadata } from "next"
+import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"] })
-
-export const metadata = {
+export const metadata: Metadata = {
   title: "YYC³ 金融仪表盘 | Financial Dashboard",
   description: "YYC³ (YanYuCloudCube) — 现代化智能金融数据可视化平台",
   generator: 'yyc3-project'
@@ -25,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-CN" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className="font-sans antialiased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
         </ThemeProvider>

@@ -2,108 +2,23 @@
  * @file 交易列表组件
  * @description 展示最近交易记录的组件
  * @author YYC³
- * @version 1.0.0
+ * @version 1.1.0
  * @created 2025-09-15
+ * @updated 2026-07-15 解耦数据层，使用统一类型
  */
 
+import { dashboardSummary } from "@/data/accounts"
+import { transactions as defaultTransactions } from "@/data/transactions"
 import { cn } from "@/lib/utils"
-import {
-  ArrowUpRight,
-  ArrowDownLeft,
-  Wallet,
-  ShoppingCart,
-  CreditCard,
-  type LucideIcon,
-  ArrowRight,
-} from "lucide-react"
-
-interface Transaction {
-  id: string
-  title: string
-  amount: string
-  type: "incoming" | "outgoing"
-  category: string
-  icon: LucideIcon
-  timestamp: string
-  status: "completed" | "pending" | "failed"
-}
+import type { Transaction } from "@/types/financial"
+import { ArrowDownLeft, ArrowRight, ArrowUpRight } from "lucide-react"
 
 interface List02Props {
   transactions?: Transaction[]
   className?: string
 }
 
-const categoryStyles = {
-  shopping: "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100",
-  food: "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100",
-  transport: "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100",
-  entertainment: "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100",
-}
-
-const TRANSACTIONS: Transaction[] = [
-  {
-    id: "1",
-    title: "Apple Store 购物",
-    amount: "¥999.00",
-    type: "outgoing",
-    category: "shopping",
-    icon: ShoppingCart,
-    timestamp: "今天 14:45",
-    status: "completed",
-  },
-  {
-    id: "2",
-    title: "工资入账",
-    amount: "¥4,500.00",
-    type: "incoming",
-    category: "transport",
-    icon: Wallet,
-    timestamp: "今天 09:00",
-    status: "completed",
-  },
-  {
-    id: "3",
-    title: "Netflix 订阅",
-    amount: "¥15.99",
-    type: "outgoing",
-    category: "entertainment",
-    icon: CreditCard,
-    timestamp: "昨天",
-    status: "pending",
-  },
-  {
-    id: "4",
-    title: "Apple Store 购物",
-    amount: "¥999.00",
-    type: "outgoing",
-    category: "shopping",
-    icon: ShoppingCart,
-    timestamp: "今天 14:45",
-    status: "completed",
-  },
-  {
-    id: "5",
-    title: "Supabase 订阅",
-    amount: "¥15.99",
-    type: "outgoing",
-    category: "entertainment",
-    icon: CreditCard,
-    timestamp: "昨天",
-    status: "pending",
-  },
-  {
-    id: "6",
-    title: "Vercel 订阅",
-    amount: "¥15.99",
-    type: "outgoing",
-    category: "entertainment",
-    icon: CreditCard,
-    timestamp: "昨天",
-    status: "pending",
-  },
-]
-
-export default function List02({ transactions = TRANSACTIONS, className }: List02Props) {
+export default function List02({ transactions = defaultTransactions, className }: List02Props) {
   return (
     <div
       className={cn(
@@ -118,7 +33,7 @@ export default function List02({ transactions = TRANSACTIONS, className }: List0
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
             Recent Activity
-            <span className="text-xs font-normal text-zinc-600 dark:text-zinc-400 ml-1">(23 transactions)</span>
+            <span className="text-xs font-normal text-zinc-600 dark:text-zinc-400 ml-1">({dashboardSummary.transactionCount} transactions)</span>
           </h2>
           <span className="text-xs text-zinc-600 dark:text-zinc-400">This Month</span>
         </div>

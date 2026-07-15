@@ -2,66 +2,23 @@
  * @file 账户列表组件
  * @description 展示用户账户信息和余额的组件
  * @author YYC³
- * @version 1.0.0
+ * @version 1.1.0
  * @created 2025-09-15
+ * @updated 2026-07-15 解耦数据层，使用统一类型
  */
 
 import { cn } from "@/lib/utils"
 import { ArrowUpRight, ArrowDownLeft, Wallet, SendHorizontal, QrCode, Plus, ArrowRight, CreditCard } from "lucide-react"
-
-interface AccountItem {
-  id: string
-  title: string
-  description?: string
-  balance: string
-  type: "savings" | "checking" | "investment" | "debt"
-}
+import { accounts as defaultAccounts, dashboardSummary } from "@/data/accounts"
+import type { Account } from "@/types/financial"
 
 interface List01Props {
   totalBalance?: string
-  accounts?: AccountItem[]
+  accounts?: Account[]
   className?: string
 }
 
-const ACCOUNTS: AccountItem[] = [
-  {
-    id: "1",
-    title: "主要储蓄",
-    description: "个人储蓄账户",
-    balance: "¥8,459.45",
-    type: "savings",
-  },
-  {
-    id: "2",
-    title: "支票账户",
-    description: "日常开支",
-    balance: "¥2,850.00",
-    type: "checking",
-  },
-  {
-    id: "3",
-    title: "投资组合",
-    description: "股票和ETF",
-    balance: "¥15,230.80",
-    type: "investment",
-  },
-  {
-    id: "4",
-    title: "信用卡",
-    description: "待处理费用",
-    balance: "¥1,200.00",
-    type: "debt",
-  },
-  {
-    id: "5",
-    title: "储蓄账户",
-    description: "应急基金",
-    balance: "$3,000.00",
-    type: "savings",
-  },
-]
-
-export default function List01({ totalBalance = "¥26,540.25", accounts = ACCOUNTS, className }: List01Props) {
+export default function List01({ totalBalance = dashboardSummary.totalBalance, accounts = defaultAccounts, className }: List01Props) {
   return (
     <div
       className={cn(
