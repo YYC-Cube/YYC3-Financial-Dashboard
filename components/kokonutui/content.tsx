@@ -2,17 +2,37 @@
  * @file 内容组件
  * @description 仪表盘主要内容区域，包含账户、交易、图表和目标等信息展示
  * @author YYC³
- * @version 1.1.0
+ * @version 1.2.0
  * @created 2025-09-15
- * @updated 2026-07-15 集成 recharts 图表
+ * @updated 2026-07-15 集成 recharts 图表 + 动态导入性能优化
  */
 
-import { Calendar, CreditCard, Wallet, TrendingUp, PieChart } from "lucide-react"
+"use client"
+
+import { Calendar, CreditCard, PieChart, TrendingUp, Wallet } from "lucide-react"
+import dynamic from "next/dynamic"
 import List01 from "./list-01"
 import List02 from "./list-02"
 import List03 from "./list-03"
-import SpendingTrendChart from "@/components/charts/spending-trend-chart"
-import ExpenseCategoryChart from "@/components/charts/expense-category-chart"
+
+/** 动态导入图表组件，减少初始 bundle 大小 */
+const SpendingTrendChart = dynamic(() => import("@/components/charts/spending-trend-chart"), {
+  loading: () => (
+    <div className="h-[280px] flex items-center justify-center text-sm text-zinc-400">
+      图表加载中...
+    </div>
+  ),
+  ssr: false,
+})
+
+const ExpenseCategoryChart = dynamic(() => import("@/components/charts/expense-category-chart"), {
+  loading: () => (
+    <div className="h-[200px] flex items-center justify-center text-sm text-zinc-400">
+      图表加载中...
+    </div>
+  ),
+  ssr: false,
+})
 
 export default function DashboardContent() {
   return (

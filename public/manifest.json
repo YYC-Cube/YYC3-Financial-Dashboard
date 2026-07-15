@@ -1,0 +1,51 @@
+{
+  "name": "YYC³ 金融仪表盘",
+  "short_name": "YYC³ FD",
+  "description": "YYC³ (YanYuCloudCube) — 现代化智能金融数据可视化平台",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "categories": ["finance", "productivity", "business"],
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/yyc3/Web App/android-chrome-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/yyc3/Web App/android-chrome-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/yyc3/Web App/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/yyc3/Web App/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/yyc3/Web App/favicon-16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "仪表盘",
+      "short_name": "仪表盘",
+      "url": "/dashboard",
+      "icons": [{ "src": "/yyc3/Web App/android-chrome-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
