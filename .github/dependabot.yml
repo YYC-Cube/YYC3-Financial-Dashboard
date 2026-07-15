@@ -1,6 +1,10 @@
+# Dependabot 配置 — YYC³ 金融仪表盘
+# 自动检查依赖更新，按生态系统分组配置
+
 version: 2
+
 updates:
-  # Enable version updates for npm (pnpm)
+  # npm 依赖（主要）
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
@@ -15,37 +19,41 @@ updates:
     commit-message:
       prefix: "deps"
       include: "scope"
+    reviewers:
+      - "YYC-Cube"
     groups:
-      # Group all minor and patch updates for production dependencies
-      production-dependencies:
-        dependency-type: "production"
-        update-types:
-          - "minor"
-          - "patch"
+      # React 生态分组
+      react:
         patterns:
-          - "*"
-
-      # Group all development dependencies
-      development-dependencies:
+          - "react"
+          - "react-dom"
+          - "react-hook-form"
+          - "@hookform/*"
+      # Next.js 分组
+      nextjs:
+        patterns:
+          - "next"
+          - "@next/*"
+      # Radix UI 分组
+      radix:
+        patterns:
+          - "@radix-ui/*"
+      # 开发依赖分组
+      dev-deps:
         dependency-type: "development"
         update-types:
           - "minor"
           - "patch"
-        patterns:
-          - "*"
 
-  # Enable version updates for GitHub Actions
+  # GitHub Actions 工作流
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
-      time: "10:00"
-      timezone: "Asia/Shanghai"
-    open-pull-requests-limit: 5
     labels:
       - "github-actions"
-      - "dependencies"
       - "automated"
     commit-message:
       prefix: "ci"
+      include: "scope"
