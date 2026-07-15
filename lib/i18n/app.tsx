@@ -12,14 +12,30 @@ import { useMemo, type ReactNode } from "react"
 import { I18nEngine } from "./engine"
 import { I18nProvider } from "./react"
 import { zhCN } from "@/locales/zh-CN"
+import { zhTW } from "@/locales/zh-TW"
 import { en } from "@/locales/en"
+import { ja } from "@/locales/ja"
+import { ko } from "@/locales/ko"
+import { fr } from "@/locales/fr"
+import { de } from "@/locales/de"
+import { es } from "@/locales/es"
+import { ptBR } from "@/locales/pt-BR"
+import { ar } from "@/locales/ar"
 
 const engine = new I18nEngine({
   locale: "zh-CN",
   fallbackLocale: "en",
   translations: {
     "zh-CN": zhCN,
+    "zh-TW": zhTW,
     en,
+    ja,
+    ko,
+    fr,
+    de,
+    es,
+    "pt-BR": ptBR,
+    ar,
   },
 })
 

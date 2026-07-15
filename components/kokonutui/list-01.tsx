@@ -7,12 +7,13 @@
  * @updated 2026-07-15 解耦数据层，使用统一类型
  */
 
-import { accounts as defaultAccounts, dashboardSummary } from "@/data/accounts"
-import { cn } from "@/lib/utils"
-import type { Account } from "@/types/financial"
-import { ArrowUpRight, ArrowDownLeft, Wallet, SendHorizontal, QrCode, Plus, ArrowRight, CreditCard } from "lucide-react"
 import AddTransactionDialog from "@/components/forms/add-transaction-dialog"
+import { dashboardSummary, accounts as defaultAccounts } from "@/data/accounts"
 import { useTranslation } from "@/lib/i18n/react"
+import { cn } from "@/lib/utils"
+import { useFinancialStore } from "@/store/financial-store"
+import type { Account } from "@/types/financial"
+import { ArrowDownLeft, ArrowRight, ArrowUpRight, CreditCard, QrCode, SendHorizontal, Wallet } from "lucide-react"
 
 interface List01Props {
   totalBalance?: string
@@ -22,6 +23,7 @@ interface List01Props {
 
 export default function List01({ totalBalance = dashboardSummary.totalBalance, accounts = defaultAccounts, className }: List01Props) {
   const { t } = useTranslation()
+  const addTransaction = useFinancialStore((s) => s.addTransaction)
 
   return (
     <div
@@ -92,24 +94,18 @@ export default function List01({ totalBalance = dashboardSummary.totalBalance, a
       {/* Updated footer with four buttons */}
       <div className="p-2 border-t border-zinc-100 dark:border-zinc-800">
         <div className="grid grid-cols-4 gap-2">
+          <AddTransactionDialog />
           <button
             type="button"
-            className={cn(
-              "flex items-center justify-center gap-2",
-              "py-2 px-3 rounded-lg",
-              "text-xs font-medium",
-              "bg-blue-600 dark:bg-blue-500",
-              "text-white dark:text-white",
-              "hover:bg-blue-700 dark:hover:bg-blue-600",
-              "shadow-sm hover:shadow",
-              "transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0",
-            )}
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Add</span>
-          </button>
-          <button
-            type="button"
+            onClick={() => {
+              addTransaction({
+                title: t("action.send"),
+                amount: "0.00",
+                type: "outgoing",
+                category: "shopping",
+                timestamp: new Date().toISOString(),
+              })
+            }}
             className={cn(
               "flex items-center justify-center gap-2",
               "py-2 px-3 rounded-lg",
@@ -122,10 +118,19 @@ export default function List01({ totalBalance = dashboardSummary.totalBalance, a
             )}
           >
             <SendHorizontal className="w-3.5 h-3.5" />
-            <span>Send</span>
+            <span>{t("action.send")}</span>
           </button>
           <button
             type="button"
+            onClick={() => {
+              addTransaction({
+                title: t("action.topUp"),
+                amount: "0.00",
+                type: "incoming",
+                category: "salary",
+                timestamp: new Date().toISOString(),
+              })
+            }}
             className={cn(
               "flex items-center justify-center gap-2",
               "py-2 px-3 rounded-lg",
@@ -138,10 +143,19 @@ export default function List01({ totalBalance = dashboardSummary.totalBalance, a
             )}
           >
             <ArrowDownLeft className="w-3.5 h-3.5" />
-            <span>Top-up</span>
+            <span>{t("action.topUp")}</span>
           </button>
           <button
             type="button"
+            onClick={() => {
+              addTransaction({
+                title: t("action.more"),
+                amount: "0.00",
+                type: "outgoing",
+                category: "entertainment",
+                timestamp: new Date().toISOString(),
+              })
+            }}
             className={cn(
               "flex items-center justify-center gap-2",
               "py-2 px-3 rounded-lg",
@@ -154,7 +168,7 @@ export default function List01({ totalBalance = dashboardSummary.totalBalance, a
             )}
           >
             <ArrowRight className="w-3.5 h-3.5" />
-            <span>More</span>
+            <span>{t("action.more")}</span>
           </button>
         </div>
       </div>

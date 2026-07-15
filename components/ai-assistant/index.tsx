@@ -8,22 +8,27 @@
  * @reference docs/AI-Dev/AIAssistant/AIAssistant.tsx
  */
 
-import { useState, useCallback } from "react"
-import { Sparkles, X, Send, Trash2, Settings, Zap, Users } from "lucide-react"
 import { useTranslation } from "@/lib/i18n/react"
-import {
-  FINANCE_PERSONAS, PERSONAS_MAP, DEFAULT_MODELS,
-  FINANCE_COMMANDS, AI_SKILLS, cmdCategories,
-  moodEmoji, generateMessageId, getCurrentTimestamp, INITIAL_TIMESTAMP,
-} from "./data"
-import { getPersonaResponse, getPersonaGreeting } from "./mock"
-import type { FinanceAssistantProps, ChatMessage, TabKey } from "./types"
 import { cn } from "@/lib/utils"
+import { Send, Settings, Sparkles, Trash2, Users, Wrench, X, Zap } from "lucide-react"
+import { useCallback, useState } from "react"
+import {
+  AI_SKILLS, cmdCategories,
+  DEFAULT_MODELS,
+  FINANCE_COMMANDS,
+  FINANCE_PERSONAS,
+  generateMessageId, getCurrentTimestamp, INITIAL_TIMESTAMP,
+  moodEmoji,
+  PERSONAS_MAP,
+} from "./data"
+import { getPersonaGreeting, getPersonaResponse } from "./mock"
+import type { ChatMessage, FinanceAssistantProps, TabKey } from "./types"
 
 const TABS: { key: TabKey; icon: typeof Zap; label: string }[] = [
   { key: "chat", icon: Sparkles, label: "对话" },
   { key: "commands", icon: Zap, label: "命令" },
   { key: "people", icon: Users, label: "顾问" },
+  { key: "skills", icon: Wrench, label: "技能" },
   { key: "settings", icon: Settings, label: "设置" },
 ]
 
@@ -128,7 +133,7 @@ export function FinanceAssistant({
     <div
       className={cn(
         mode === "floating" &&
-          "fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-2rem)]",
+        "fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-2rem)]",
         "bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden",
       )}
     >
@@ -329,6 +334,51 @@ export function FinanceAssistant({
                   </p>
                 </div>
               </button>
+            ))}
+          </div>
+        )}
+
+        {/* ---- 技能面板 ---- */}
+        {activeTab === "skills" && (
+          <div className="p-3 space-y-2">
+            <p className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+              已启用的技能
+            </p>
+            {AI_SKILLS.map((skill) => (
+              <div
+                key={skill.id}
+                className={cn(
+                  "flex items-center gap-3 p-2.5 rounded-lg transition-colors",
+                  skill.active
+                    ? "bg-zinc-50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    : "opacity-50",
+                )}
+              >
+                <div
+                  className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                  style={{ backgroundColor: `${skill.color}15` }}
+                >
+                  <skill.icon className="w-4 h-4" style={{ color: skill.color }} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <p className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                      {skill.name}
+                    </p>
+                    <span className={cn(
+                      "text-[10px] px-1.5 py-0.5 rounded-full",
+                      skill.active
+                        ? "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400"
+                        : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500",
+                    )}>
+                      {skill.active ? "已启用" : "未启用"}
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                    {skill.description}
+                  </p>
+                </div>
+              </div>
             ))}
           </div>
         )}

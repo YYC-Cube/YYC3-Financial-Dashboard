@@ -2,15 +2,17 @@
  * @file 根布局组件
  * @description 应用的全局布局组件，配置默认语言、主题提供者、PWA、i18n 和 AI 助手
  * @author YYC³
- * @version 1.3.0
+ * @version 1.4.0
  * @created 2025-09-15
- * @updated 2026-07-16 集成 AI 助手 + Logo 迁移
+ * @updated 2026-07-16 集成 AI 助手 + Logo 迁移 + 10 语言包 + 多端适配
+ * @reference YYC3-多端适配-规范文档 §4.1-4.6
  */
 
 import FinanceAssistantWrapper from "@/components/ai-assistant/wrapper"
 import PWAInstallPrompt from "@/components/pwa/pwa-install-prompt"
 import PWARegister from "@/components/pwa/pwa-register"
 import { ThemeProvider } from "@/components/theme-provider"
+import HtmlAttributes from "@/components/i18n/html-attributes"
 import { I18nApp } from "@/lib/i18n/app"
 import type { Metadata, Viewport } from "next"
 import "./globals.css"
@@ -28,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "zh_CN",
-    alternateLocale: ["en_US"],
+    alternateLocale: ["en_US", "zh_TW", "ja_JP", "ko_KR", "fr_FR", "de_DE", "es_ES", "pt_BR", "ar_SA"],
     url: "https://fd.yyc3.top",
     siteName: "YYC³ 金融仪表盘",
     title: "YYC³ 金融仪表盘 | Financial Dashboard",
@@ -79,6 +81,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <body className="font-sans antialiased">
+        <HtmlAttributes />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <I18nApp>
             {children}

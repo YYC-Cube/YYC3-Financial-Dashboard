@@ -9,8 +9,8 @@
   "background_color": "#0a0a0a",
   "theme_color": "#0a0a0a",
   "categories": ["finance", "productivity", "business"],
-  "lang": "zh-CN",
-  "dir": "ltr",
+  "lang": "en",
+  "dir": "auto",
   "icons": [
     {
       "src": "/yyc3-icons/web/icon-192.png",

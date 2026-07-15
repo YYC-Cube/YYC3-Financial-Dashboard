@@ -61,12 +61,24 @@ export function I18nProvider({ engine, children }: I18nProviderProps) {
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>
 }
 
+/** 当 Provider 缺失时的兜底上下文（SSR / 静态导出的 not-found 页面等场景） */
+const FALLBACK_CTX: I18nContextValue = {
+  engine: null as unknown as I18nEngine,
+  locale: "zh-CN" as Locale,
+  ready: false,
+  setLocale: async () => {},
+  t: (key: string) => key,
+}
+
 export function useI18nContext(): I18nContextValue {
   const ctx = useContext(I18nContext)
   if (!ctx) {
-    throw new Error(
-      "useTranslation 必须在 <I18nProvider> 内使用。请用 <I18nProvider engine={engine}> 包裹组件树。",
-    )
+    if (typeof window !== "undefined") {
+      console.warn(
+        "[i18n] useTranslation 在 <I18nProvider> 外使用，返回兜底值。请用 <I18nProvider engine={engine}> 包裹组件树。",
+      )
+    }
+    return FALLBACK_CTX
   }
   return ctx
 }

@@ -2,22 +2,31 @@
 
 /**
  * @file 语言切换组件
- * @description 提供 zh-CN/en 切换按钮
+ * @description 提供 10 种语言切换按钮
  * @author YYC³
- * @version 1.0.0
+ * @version 2.0.0
  * @created 2026-07-15
+ * @updated 2026-07-16 — 扩展至 10 种语言
  * @reference YYC3-i18n-Core
  */
 
-import { Languages, Check } from "lucide-react"
-import { useState, useRef, useEffect } from "react"
-import { useTranslation } from "@/lib/i18n/react"
 import type { Locale } from "@/lib/i18n/engine"
+import { useTranslation } from "@/lib/i18n/react"
 import { cn } from "@/lib/utils"
+import { Check, Languages } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
 
 const localeOptions: { value: Locale; label: string; flag: string }[] = [
-  { value: "zh-CN", label: "中文", flag: "🇨🇳" },
-  { value: "en", label: "English", flag: "🇺🇸" },
+  { value: "zh-CN", label: "Simplified Chinese", flag: "CN" },
+  { value: "zh-TW", label: "Traditional Chinese", flag: "TW" },
+  { value: "en", label: "English", flag: "US" },
+  { value: "ja", label: "Japanese", flag: "JP" },
+  { value: "ko", label: "Korean", flag: "KR" },
+  { value: "fr", label: "French", flag: "FR" },
+  { value: "de", label: "German", flag: "DE" },
+  { value: "es", label: "Spanish", flag: "ES" },
+  { value: "pt-BR", label: "Portuguese (BR)", flag: "BR" },
+  { value: "ar", label: "Arabic", flag: "SA" },
 ]
 
 export default function LanguageSwitcher() {
@@ -46,7 +55,7 @@ export default function LanguageSwitcher() {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-1 w-32 bg-white dark:bg-zinc-900 rounded-lg shadow-lg border border-zinc-200 dark:border-zinc-700 py-1 z-50">
+        <div className="absolute right-0 top-full mt-1 w-44 bg-white dark:bg-zinc-900 rounded-lg shadow-lg border border-zinc-200 dark:border-zinc-700 py-1 z-50 max-h-64 overflow-y-auto">
           {localeOptions.map((option) => (
             <button
               key={option.value}
@@ -62,7 +71,7 @@ export default function LanguageSwitcher() {
               )}
             >
               <span className="flex items-center gap-2">
-                <span>{option.flag}</span>
+                <span className="text-[10px] font-mono text-zinc-400 w-5 text-center">{option.flag}</span>
                 <span>{option.label}</span>
               </span>
               {locale === option.value && <Check className="w-3 h-3" />}

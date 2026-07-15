@@ -35,10 +35,10 @@ export default function List02({ transactions = defaultTransactions, className }
       <div className="p-4">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-            Recent Activity
+            {t("transaction.title")}
             <span className="text-xs font-normal text-zinc-600 dark:text-zinc-400 ml-1">({t("transaction.count", { count: String(dashboardSummary.transactionCount) })})</span>
           </h2>
-          <span className="text-xs text-zinc-600 dark:text-zinc-400">This Month</span>
+          <span className="text-xs text-zinc-600 dark:text-zinc-400">{t("transaction.thisMonth")}</span>
         </div>
 
         <div className="space-y-1">

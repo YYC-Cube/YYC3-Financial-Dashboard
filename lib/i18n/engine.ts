@@ -7,8 +7,8 @@
  * @reference YYC3-i18n-Core (https://github.com/YYC-Cube/YYC3-i18n-Core)
  */
 
-/** 支持的语言 */
-export type Locale = "zh-CN" | "en"
+/** 支持的语言 — 10 种语言包（源自 YYC3-i18n-Core） */
+export type Locale = "zh-CN" | "zh-TW" | "en" | "ja" | "ko" | "fr" | "de" | "es" | "pt-BR" | "ar"
 
 /** 翻译映射类型 */
 export type TranslationMap = { [key: string]: string | TranslationMap }
@@ -48,11 +48,22 @@ export class I18nEngine {
     if (typeof window !== "undefined") {
       // 1. 检查 localStorage
       const stored = localStorage.getItem(STORAGE_KEY)
-      if (stored === "zh-CN" || stored === "en") return stored
+      const supported = ["zh-CN", "zh-TW", "en", "ja", "ko", "fr", "de", "es", "pt-BR", "ar"]
+      if (stored && supported.includes(stored)) return stored as Locale
 
       // 2. 检查浏览器语言
       const browserLang = navigator.language
-      if (browserLang.startsWith("zh")) return "zh-CN"
+      if (browserLang.startsWith("zh")) {
+        if (browserLang === "zh-TW" || browserLang === "zh-HK") return "zh-TW"
+        return "zh-CN"
+      }
+      if (browserLang.startsWith("ja")) return "ja"
+      if (browserLang.startsWith("ko")) return "ko"
+      if (browserLang.startsWith("fr")) return "fr"
+      if (browserLang.startsWith("de")) return "de"
+      if (browserLang.startsWith("es")) return "es"
+      if (browserLang.startsWith("pt")) return "pt-BR"
+      if (browserLang.startsWith("ar")) return "ar"
     }
     return "zh-CN"
   }
