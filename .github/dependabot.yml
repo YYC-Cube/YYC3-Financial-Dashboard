@@ -19,8 +19,6 @@ updates:
     commit-message:
       prefix: "deps"
       include: "scope"
-    reviewers:
-      - "YYC-Cube"
     groups:
       # React 生态分组
       react:

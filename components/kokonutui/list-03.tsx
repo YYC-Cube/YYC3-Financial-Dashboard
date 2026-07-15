@@ -8,7 +8,9 @@
  */
 
 import { financialGoals as defaultItems } from "@/data/goals"
+import { useTranslation } from "@/lib/i18n/react"
 import { cn } from "@/lib/utils"
+import { useFinancialStore } from "@/store/financial-store"
 import type { FinancialGoal } from "@/types/financial"
 import {
   AlertCircle,
@@ -30,6 +32,12 @@ const iconStyles = {
   debt: "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400",
 }
 
+const statusKeyMap: Record<string, string> = {
+  pending: "goal.pending",
+  "in-progress": "goal.inProgress",
+  completed: "goal.completed",
+}
+
 const statusConfig = {
   pending: {
     icon: Timer,
@@ -49,6 +57,8 @@ const statusConfig = {
 }
 
 export default function List03({ items = defaultItems, className }: List03Props) {
+  const { t } = useTranslation()
+  const updateGoalProgress = useFinancialStore((s) => s.updateGoalProgress)
   return (
     <div className={cn("w-full overflow-x-auto scrollbar-none", className)}>
       <div className="flex gap-3 min-w-full p-1">
@@ -79,7 +89,7 @@ export default function List03({ items = defaultItems, className }: List03Props)
                   )}
                 >
                   {React.createElement(statusConfig[item.status].icon, { className: "w-3.5 h-3.5" })}
-                  {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+                  {t(statusKeyMap[item.status] ?? item.status)}
                 </div>
               </div>
 
@@ -91,7 +101,7 @@ export default function List03({ items = defaultItems, className }: List03Props)
               {typeof item.progress === "number" && (
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-zinc-600 dark:text-zinc-400">Progress</span>
+                    <span className="text-zinc-600 dark:text-zinc-400">{t("goal.progress")}</span>
                     <span className="text-zinc-900 dark:text-zinc-100">{item.progress}%</span>
                   </div>
                   <div className="h-1.5 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
@@ -106,7 +116,7 @@ export default function List03({ items = defaultItems, className }: List03Props)
               {item.amount && (
                 <div className="flex items-center gap-1.5">
                   <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{item.amount}</span>
-                  <span className="text-xs text-zinc-600 dark:text-zinc-400">target</span>
+                  <span className="text-xs text-zinc-600 dark:text-zinc-400">{t("goal.target")}</span>
                 </div>
               )}
 
@@ -118,6 +128,7 @@ export default function List03({ items = defaultItems, className }: List03Props)
 
             <div className="mt-auto border-t border-zinc-100 dark:border-zinc-800">
               <button
+                onClick={() => updateGoalProgress(item.id, Math.min((item.progress ?? 0) + 10, 100))}
                 className={cn(
                   "w-full flex items-center justify-center gap-2",
                   "py-2.5 px-3",
@@ -128,7 +139,7 @@ export default function List03({ items = defaultItems, className }: List03Props)
                   "transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0",
                 )}
               >
-                View Details
+                {t("goal.viewDetails")}
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>

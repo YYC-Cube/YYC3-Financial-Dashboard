@@ -30,6 +30,11 @@ next-env.d.ts
 # team documentation (local only)
 docs/10-团队通用指南/
 
+# AI-Dev reference docs (local only, not for remote)
+docs/10-AI-Packages/
+docs/10-AI-Assistant/
+docs/10-AI-Apps/
+
 # OS files
 .DS_Store
 Thumbs.db

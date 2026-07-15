@@ -8,13 +8,12 @@
  * @created 2026-07-15
  */
 
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Plus } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { Plus } from "lucide-react"
 
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -32,6 +31,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useTranslation } from "@/lib/i18n/react"
+import { cn } from "@/lib/utils"
 import { useFinancialStore } from "@/store/financial-store"
 
 /** Zod 验证 schema */
@@ -44,18 +45,13 @@ const transactionSchema = z.object({
 
 type TransactionFormData = z.infer<typeof transactionSchema>
 
-const categoryLabels: Record<string, string> = {
-  shopping: "购物",
-  food: "餐饮",
-  transport: "交通",
-  entertainment: "娱乐",
-  salary: "工资",
-  subscription: "订阅",
-}
+/** 分类键列表 */
+const categoryKeys = ["shopping", "food", "transport", "entertainment", "salary", "subscription"] as const
 
 export default function AddTransactionDialog() {
   const [open, setOpen] = useState(false)
   const addTransaction = useFinancialStore((s) => s.addTransaction)
+  const { t } = useTranslation()
 
   const {
     register,
@@ -83,7 +79,7 @@ export default function AddTransactionDialog() {
       amount: `¥${data.amount}`,
       type: data.type,
       category: data.category,
-      timestamp: "刚刚",
+      timestamp: t("transaction.justNow"),
     })
     reset()
     setOpen(false)
@@ -106,20 +102,20 @@ export default function AddTransactionDialog() {
           )}
         >
           <Plus className="w-3.5 h-3.5" />
-          <span>添加交易</span>
+          <span>{t("transaction.add")}</span>
         </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[400px]">
         <DialogHeader>
-          <DialogTitle>添加新交易</DialogTitle>
+          <DialogTitle>{t("transaction.addTitle")}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* 交易名称 */}
           <div className="space-y-2">
-            <Label htmlFor="title">交易名称</Label>
+            <Label htmlFor="title">{t("transaction.name")}</Label>
             <Input
               id="title"
-              placeholder="例如：超市购物"
+              placeholder={t("transaction.namePlaceholder")}
               {...register("title")}
             />
             {errors.title && (
@@ -129,12 +125,12 @@ export default function AddTransactionDialog() {
 
           {/* 金额 */}
           <div className="space-y-2">
-            <Label htmlFor="amount">金额 (¥)</Label>
+            <Label htmlFor="amount">{t("transaction.amount")} (¥)</Label>
             <Input
               id="amount"
               type="text"
               inputMode="decimal"
-              placeholder="0.00"
+              placeholder={t("transaction.amountPlaceholder")}
               {...register("amount")}
             />
             {errors.amount && (
@@ -144,7 +140,7 @@ export default function AddTransactionDialog() {
 
           {/* 收支类型 */}
           <div className="space-y-2">
-            <Label>收支类型</Label>
+            <Label>{t("transaction.type")}</Label>
             <div className="grid grid-cols-2 gap-2">
               <button
                 key="outgoing-btn"
@@ -157,7 +153,7 @@ export default function AddTransactionDialog() {
                     : "border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400",
                 )}
               >
-                支出
+                {t("transaction.outgoing")}
               </button>
               <button
                 key="incoming-btn"
@@ -170,14 +166,14 @@ export default function AddTransactionDialog() {
                     : "border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400",
                 )}
               >
-                收入
+                {t("transaction.incoming")}
               </button>
             </div>
           </div>
 
           {/* 分类 */}
           <div className="space-y-2">
-            <Label>分类</Label>
+            <Label>{t("transaction.category")}</Label>
             <Select
               value={selectedCategory}
               onValueChange={(val) => setValue("category", val as TransactionFormData["category"])}
@@ -186,9 +182,9 @@ export default function AddTransactionDialog() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {Object.entries(categoryLabels).map(([value, label]) => (
+                {categoryKeys.map((value) => (
                   <SelectItem key={value} value={value}>
-                    {label}
+                    {t(`transaction.${value}`)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -203,10 +199,10 @@ export default function AddTransactionDialog() {
               className="flex-1"
               onClick={() => setOpen(false)}
             >
-              取消
+              {t("common.cancel")}
             </Button>
             <Button type="submit" className="flex-1">
-              确认添加
+              {t("common.confirm")}
             </Button>
           </div>
         </form>

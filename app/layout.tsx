@@ -1,15 +1,19 @@
 /**
  * @file 根布局组件
- * @description 应用的全局布局组件，配置默认语言、主题提供者和 PWA
+ * @description 应用的全局布局组件，配置默认语言、主题提供者、PWA、i18n 和 AI 助手
  * @author YYC³
- * @version 1.1.0
+ * @version 1.4.0
  * @created 2025-09-15
- * @updated 2026-07-15 集成 PWA + SEO 元数据
+ * @updated 2026-07-16 集成 AI 助手 + Logo 迁移 + 10 语言包 + 多端适配
+ * @reference YYC3-多端适配-规范文档 §4.1-4.6
  */
 
+import FinanceAssistantWrapper from "@/components/ai-assistant/wrapper"
 import PWAInstallPrompt from "@/components/pwa/pwa-install-prompt"
 import PWARegister from "@/components/pwa/pwa-register"
 import { ThemeProvider } from "@/components/theme-provider"
+import HtmlAttributes from "@/components/i18n/html-attributes"
+import { I18nApp } from "@/lib/i18n/app"
 import type { Metadata, Viewport } from "next"
 import "./globals.css"
 
@@ -19,40 +23,43 @@ export const metadata: Metadata = {
     default: "YYC³ 金融仪表盘 | Financial Dashboard",
     template: "%s | YYC³ 金融仪表盘",
   },
-  description: "YYC³ (YanYuCloudCube) — 现代化智能金融数据可视化平台，基于 Next.js 16 + React 19 构建",
-  generator: "yyc3-project",
-  manifest: "/manifest.json",
-  applicationName: "YYC³ 金融仪表盘",
-  authors: [{ name: "YanYuCloudCube Team", url: "https://github.com/YYC-Cube" }],
-  keywords: ["金融仪表盘", "财务管理", "数据可视化", "Financial Dashboard", "YYC³", "YanYuCloudCube", "Next.js", "React"],
-  referrer: "origin-when-cross-origin",
-  formatDetection: { telephone: false, email: false, address: false },
+  description: "现代化智能金融数据可视化平台 — 账户管理、交易追踪、收支分析、财务目标",
+  keywords: ["金融仪表盘", "财务管理", "收支分析", "YYC³", "Financial Dashboard"],
+  authors: [{ name: "YanYuCloudCube Team", url: "https://yyc3.top" }],
+  creator: "YanYuCloudCube Team",
   openGraph: {
     type: "website",
     locale: "zh_CN",
+    alternateLocale: ["en_US", "zh_TW", "ja_JP", "ko_KR", "fr_FR", "de_DE", "es_ES", "pt_BR", "ar_SA"],
     url: "https://fd.yyc3.top",
     siteName: "YYC³ 金融仪表盘",
     title: "YYC³ 金融仪表盘 | Financial Dashboard",
     description: "现代化智能金融数据可视化平台",
-    images: [{ url: "/yyc3/Web App/android-chrome-512.png", width: 512, height: 512, alt: "YYC³" }],
+    images: [{ url: "/yyc3-icons/web/icon-512.png", width: 512, height: 512, alt: "YYC³" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "YYC³ 金融仪表盘",
     description: "现代化智能金融数据可视化平台",
-    images: ["/yyc3/Web App/android-chrome-512.png"],
+    images: ["/yyc3-icons/web/icon-512.png"],
   },
   icons: {
     icon: [
-      { url: "/yyc3/Web App/favicon-32.png", sizes: "32x32", type: "image/png" },
-      { url: "/yyc3/Web App/favicon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/yyc3-icons/web/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/yyc3-icons/web/favicon-16.png", sizes: "16x16", type: "image/png" },
     ],
-    apple: [{ url: "/yyc3/Web App/apple-touch-icon.png", sizes: "180x180" }],
+    apple: [{ url: "/yyc3-icons/web/apple-touch-icon.png", sizes: "180x180" }],
   },
   appleWebApp: {
     capable: true,
     title: "YYC³ FD",
-    statusBarStyle: "default",
+    statusBarStyle: "black-translucent",
+  },
+  manifest: "/manifest.json",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
 }
 
@@ -74,10 +81,14 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <body className="font-sans antialiased">
+        <HtmlAttributes />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
-          <PWARegister />
-          <PWAInstallPrompt />
+          <I18nApp>
+            {children}
+            <PWARegister />
+            <PWAInstallPrompt />
+            <FinanceAssistantWrapper />
+          </I18nApp>
         </ThemeProvider>
       </body>
     </html>

@@ -10,6 +10,7 @@
 import AddTransactionDialog from "@/components/forms/add-transaction-dialog"
 import { dashboardSummary } from "@/data/accounts"
 import { transactions as defaultTransactions } from "@/data/transactions"
+import { useTranslation } from "@/lib/i18n/react"
 import { cn } from "@/lib/utils"
 import type { Transaction } from "@/types/financial"
 import { ArrowDownLeft, ArrowRight, ArrowUpRight } from "lucide-react"
@@ -20,6 +21,7 @@ interface List02Props {
 }
 
 export default function List02({ transactions = defaultTransactions, className }: List02Props) {
+  const { t } = useTranslation()
   return (
     <div
       className={cn(
@@ -33,10 +35,10 @@ export default function List02({ transactions = defaultTransactions, className }
       <div className="p-4">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-            Recent Activity
-            <span className="text-xs font-normal text-zinc-600 dark:text-zinc-400 ml-1">({dashboardSummary.transactionCount} transactions)</span>
+            {t("transaction.title")}
+            <span className="text-xs font-normal text-zinc-600 dark:text-zinc-400 ml-1">({t("transaction.count", { count: String(dashboardSummary.transactionCount) })})</span>
           </h2>
-          <span className="text-xs text-zinc-600 dark:text-zinc-400">This Month</span>
+          <span className="text-xs text-zinc-600 dark:text-zinc-400">{t("transaction.thisMonth")}</span>
         </div>
 
         <div className="space-y-1">
@@ -113,7 +115,7 @@ export default function List02({ transactions = defaultTransactions, className }
               "focus:ring-offset-2 dark:focus:ring-offset-zinc-900",
             )}
           >
-            <span>View All Transactions</span>
+            <span>{t("transaction.viewAll")}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
