@@ -7,6 +7,7 @@
  * @updated 2026-07-15 解耦数据层，使用统一类型
  */
 
+import AddTransactionDialog from "@/components/forms/add-transaction-dialog"
 import { dashboardSummary } from "@/data/accounts"
 import { transactions as defaultTransactions } from "@/data/transactions"
 import { cn } from "@/lib/utils"
@@ -90,29 +91,32 @@ export default function List02({ transactions = defaultTransactions, className }
       </div>
 
       <div className="p-2 border-t border-zinc-100 dark:border-zinc-800">
-        <button
-          type="button"
-          className={cn(
-            "w-full flex items-center justify-center gap-2",
-            "py-2 px-3 rounded-lg",
-            "text-xs font-medium",
-            "bg-gradient-to-r from-blue-600 to-blue-500",
-            "dark:from-blue-500 dark:to-blue-600",
-            "text-white dark:text-white",
-            "hover:from-blue-700 hover:to-blue-600",
-            "dark:hover:from-blue-600 dark:hover:to-blue-700",
-            "shadow-md hover:shadow-lg",
-            "transform transition-all duration-250",
-            "hover:-translate-y-0.5 hover:scale-[1.02]",
-            "active:translate-y-0 active:scale-100",
-            "focus:outline-none focus:ring-2",
-            "focus:ring-blue-500 dark:focus:ring-blue-400",
-            "focus:ring-offset-2 dark:focus:ring-offset-zinc-900",
-          )}
-        >
-          <span>View All Transactions</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </button>
+        <div className="flex gap-2">
+          <AddTransactionDialog />
+          <button
+            type="button"
+            className={cn(
+              "flex-1 flex items-center justify-center gap-2",
+              "py-2 px-3 rounded-lg",
+              "text-xs font-medium",
+              "bg-gradient-to-r from-blue-600 to-blue-500",
+              "dark:from-blue-500 dark:to-blue-600",
+              "text-white dark:text-white",
+              "hover:from-blue-700 hover:to-blue-600",
+              "dark:hover:from-blue-600 dark:hover:to-blue-700",
+              "shadow-md hover:shadow-lg",
+              "transform transition-all duration-250",
+              "hover:-translate-y-0.5 hover:scale-[1.02]",
+              "active:translate-y-0 active:scale-100",
+              "focus:outline-none focus:ring-2",
+              "focus:ring-blue-500 dark:focus:ring-blue-400",
+              "focus:ring-offset-2 dark:focus:ring-offset-zinc-900",
+            )}
+          >
+            <span>View All Transactions</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
     </div>
   )
