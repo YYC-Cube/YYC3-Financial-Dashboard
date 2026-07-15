@@ -58,9 +58,17 @@ export default function Sidebar() {
     children: React.ReactNode
     color?: string
   }) {
-    const isActive = href === "/dashboard"
-      ? pathname === "/dashboard" || pathname === "/"
-      : pathname.startsWith(href)
+    const [basePath, hash] = href.split("#")
+    const isActive = (() => {
+      // 纯路由匹配（无 hash）
+      if (!hash) {
+        return href === "/dashboard"
+          ? pathname === "/dashboard" || pathname === "/"
+          : pathname.startsWith(href)
+      }
+      // hash 路由：仅当路径匹配且 hash 匹配时高亮
+      return (pathname === basePath || pathname === "/") && window.location.hash === `#${hash}`
+    })()
     const colorClasses: Record<string, string> = {
       blue: "text-blue-600 dark:text-blue-400",
       green: "text-green-600 dark:text-green-400",
@@ -134,13 +142,13 @@ export default function Sidebar() {
                   <NavItem href="/dashboard" icon={Home} color="blue">
                     {t("nav.dashboard")}
                   </NavItem>
-                  <NavItem href="/dashboard" icon={BarChart2} color="purple">
+                  <NavItem href="/dashboard#analytics" icon={BarChart2} color="purple">
                     {t("nav.analytics")}
                   </NavItem>
-                  <NavItem href="/dashboard" icon={Building2} color="teal">
+                  <NavItem href="/dashboard#organization" icon={Building2} color="teal">
                     {t("nav.organization")}
                   </NavItem>
-                  <NavItem href="/dashboard" icon={Folder} color="amber">
+                  <NavItem href="/dashboard#projects" icon={Folder} color="amber">
                     {t("nav.projects")}
                   </NavItem>
                 </div>
@@ -152,13 +160,13 @@ export default function Sidebar() {
                   {t("nav.finance")}
                 </div>
                 <div className="space-y-1">
-                  <NavItem href="/dashboard" icon={Wallet} color="green">
+                  <NavItem href="/dashboard#transactions" icon={Wallet} color="green">
                     {t("nav.transactions")}
                   </NavItem>
-                  <NavItem href="/dashboard" icon={Receipt} color="blue">
+                  <NavItem href="/dashboard#invoices" icon={Receipt} color="blue">
                     {t("nav.invoices")}
                   </NavItem>
-                  <NavItem href="/dashboard" icon={CreditCard} color="amber">
+                  <NavItem href="/dashboard#payments" icon={CreditCard} color="amber">
                     {t("nav.payments")}
                   </NavItem>
                 </div>
@@ -170,16 +178,16 @@ export default function Sidebar() {
                   {t("nav.team")}
                 </div>
                 <div className="space-y-1">
-                  <NavItem href="/dashboard" icon={Users2} color="purple">
+                  <NavItem href="/dashboard#members" icon={Users2} color="purple">
                     {t("nav.members")}
                   </NavItem>
-                  <NavItem href="/dashboard" icon={Shield} color="green">
+                  <NavItem href="/dashboard#permissions" icon={Shield} color="green">
                     {t("nav.permissions")}
                   </NavItem>
-                  <NavItem href="/dashboard" icon={MessagesSquare} color="blue">
+                  <NavItem href="/dashboard#chat" icon={MessagesSquare} color="blue">
                     {t("nav.chat")}
                   </NavItem>
-                  <NavItem href="/dashboard" icon={Video} color="pink">
+                  <NavItem href="/dashboard#meetings" icon={Video} color="pink">
                     {t("nav.meetings")}
                   </NavItem>
                 </div>
@@ -197,19 +205,19 @@ export default function Sidebar() {
                   <NavItem href="/ai-family/chat" icon={MessagesSquare} color="emerald">
                     {t("nav.familyChat")}
                   </NavItem>
-                  <NavItem href="/dashboard" icon={Activity} color="emerald">
+                  <NavItem href="/dashboard#monitor" icon={Activity} color="emerald">
                     {t("nav.monitorCenter")}
                   </NavItem>
-                  <NavItem href="/dashboard" icon={Wrench} color="emerald">
+                  <NavItem href="/dashboard#ops" icon={Wrench} color="emerald">
                     {t("nav.opsCenter")}
                   </NavItem>
-                  <NavItem href="/dashboard" icon={Brain} color="emerald">
+                  <NavItem href="/dashboard#ai-decision" icon={Brain} color="emerald">
                     {t("nav.aiDecision")}
                   </NavItem>
-                  <NavItem href="/dashboard" icon={Code2} color="emerald">
+                  <NavItem href="/dashboard#dev-tools" icon={Code2} color="emerald">
                     {t("nav.devTools")}
                   </NavItem>
-                  <NavItem href="/dashboard" icon={ShieldCheck} color="emerald">
+                  <NavItem href="/dashboard#sys-admin" icon={ShieldCheck} color="emerald">
                     {t("nav.sysAdmin")}
                   </NavItem>
                 </div>
@@ -222,7 +230,7 @@ export default function Sidebar() {
               <NavItem href="/ai-family/settings" icon={Settings} color="teal">
                 {t("nav.settings")}
               </NavItem>
-              <NavItem href="/dashboard" icon={HelpCircle} color="amber">
+              <NavItem href="/dashboard#help" icon={HelpCircle} color="amber">
                 {t("nav.help")}
               </NavItem>
             </div>

@@ -2,24 +2,28 @@
 
 /**
  * @file AI Family 家园首页
- * @description 时钟环布局 + 8位家人状态墙
+ * @description 时钟环布局 + 8位家人状态墙，点击进入交流中心
  * @author YYC³
- * @version 1.0.0
+ * @version 2.0.0
  * @created 2026-07-16
- * @reference docs/AI-Dev/packages/plugin-ai-family/src/pages/FamilyHomePage.tsx
+ * @updated 2026-07-16 — 点击家人跳转交流中心 + 事件总线
+ * @reference docs/AI-Dev/AIAssistant/AIAssistant.tsx — 8 人格
  */
 
 import { useState } from "react"
 import { Bot, Sparkles } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { FAMILY_PERSONAS } from "@/lib/ai-family/data"
 import { eventBus, Events } from "@/lib/ai-family/event-bus"
 
 export default function FamilyHomePage() {
+  const router = useRouter()
   const [hoveredId, setHoveredId] = useState<string | null>(null)
 
   const handlePersonaClick = (personaId: string) => {
     eventBus.emit(Events.AI_PERSONA_CHANGED, personaId)
     eventBus.emit(Events.HUB_OPEN, "chat")
+    router.push(`/ai-family/chat?persona=${personaId}`)
   }
 
   const centerX = 180; const centerY = 180; const radius = 130
@@ -35,9 +39,9 @@ export default function FamilyHomePage() {
             <Bot className="w-6 h-6 text-white" />
           </div>
         </div>
-        <h1 className="text-[#e0f0ff] text-2xl font-bold tracking-wider">AI Family · 家园</h1>
+        <h1 className="text-[#e0f0ff] text-2xl font-bold tracking-wider">AI Family 家园</h1>
         <p className="text-[rgba(0,255,136,0.35)] text-sm mt-2">
-          {FAMILY_PERSONAS.length} 位家人 · 点击头像开始对话
+          {FAMILY_PERSONAS.length} 位家人，点击头像开始对话
         </p>
       </div>
 

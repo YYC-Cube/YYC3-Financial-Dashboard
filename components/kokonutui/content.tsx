@@ -41,7 +41,7 @@ export default function DashboardContent() {
   return (
     <div className="space-y-4">
       {/* 收支趋势图 + 支出分类 */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div id="analytics" className="grid grid-cols-1 lg:grid-cols-3 gap-6 scroll-mt-20">
         <div className="lg:col-span-2 bg-white dark:bg-[#0F0F12] rounded-xl p-6 border border-gray-200 dark:border-[#1F1F23]">
           <h2 className="text-lg font-bold text-blue-700 dark:text-blue-400 mb-4 text-left flex items-center gap-2">
             <TrendingUp className="w-3.5 h-3.5 text-blue-600 dark:text-blue-500" />
@@ -59,7 +59,7 @@ export default function DashboardContent() {
       </div>
 
       {/* 账户 + 交易 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div id="transactions" className="grid grid-cols-1 lg:grid-cols-2 gap-6 scroll-mt-20">
         <div className="bg-white dark:bg-[#0F0F12] rounded-xl p-6 flex flex-col border border-gray-200 dark:border-[#1F1F23]">
           <h2 className="text-lg font-bold text-blue-700 dark:text-blue-400 mb-4 text-left flex items-center gap-2 ">
             <Wallet className="w-3.5 h-3.5 text-blue-600 dark:text-blue-500" />
@@ -81,7 +81,7 @@ export default function DashboardContent() {
       </div>
 
       {/* 财务目标 */}
-      <div className="bg-white dark:bg-[#0F0F12] rounded-xl p-6 flex flex-col items-start justify-start border border-gray-200 dark:border-[#1F1F23]">
+      <div id="goals" className="bg-white dark:bg-[#0F0F12] rounded-xl p-6 flex flex-col items-start justify-start border border-gray-200 dark:border-[#1F1F23] scroll-mt-20">
         <h2 className="text-lg font-bold text-purple-700 dark:text-purple-400 mb-4 text-left flex items-center gap-2">
           <Calendar className="w-3.5 h-3.5 text-purple-600 dark:text-purple-500" />
           {t("goal.title")}

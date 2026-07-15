@@ -2,40 +2,51 @@
 
 /**
  * @file AI Family 交流中心
- * @description 家人对话页面 — 频道列表 + 聊天区域
+ * @description 家人对话页面 — 内嵌 AI 智能助理，支持 8 位家人人格切换
  * @author YYC³
- * @version 1.0.0
+ * @version 2.0.0
  * @created 2026-07-16
- * @reference docs/AI-Dev/packages/plugin-ai-family/src/pages/FamilyChatPage.tsx
+ * @reference docs/AI-Dev/AIAssistant/AIAssistant.tsx — inline mode
  */
 
-import { MessageSquare, Users } from "lucide-react"
-import { FAMILY_PERSONAS } from "@/lib/ai-family/data"
+import { eventBus, Events } from "@/lib/ai-family/event-bus"
+import { MessageSquare } from "lucide-react"
+import dynamic from "next/dynamic"
+import { useSearchParams } from "next/navigation"
+import { Suspense, useEffect } from "react"
+
+const FinanceAssistant = dynamic(
+  () => import("@/components/ai-assistant/index").then((m) => m.FinanceAssistant),
+  { ssr: false, loading: () => <div className="flex items-center justify-center h-full text-[rgba(0,255,136,0.3)]">加载中...</div> },
+)
+
+/** 内部组件：处理 useSearchParams 的 suspense 边界 */
+function ChatContent() {
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    const persona = searchParams.get("persona")
+    if (persona) {
+      eventBus.emit(Events.AI_PERSONA_CHANGED, persona)
+    }
+  }, [searchParams])
+
+  return <FinanceAssistant mode="inline" defaultOpen={true} />
+}
 
 export default function FamilyChatPage() {
   return (
-    <div className="p-8">
-      <h1 className="text-[#e0f0ff] text-lg font-medium flex items-center gap-2">
-        <MessageSquare className="w-5 h-5 text-[#00FF88]" /> 交流中心
-      </h1>
-      <p className="text-[rgba(0,255,136,0.3)] text-sm mt-1 mb-6">与 AI 家人群聊或私聊</p>
-
-      <div className="flex gap-6">
-        <div className="w-48 space-y-1">
-          {["全体闲聊", "技术讨论", "音乐鉴赏", "创意工坊"].map((ch) => (
-            <div key={ch} className="px-3 py-2 rounded-lg text-sm cursor-pointer transition-all"
-              style={{ background: "rgba(0,40,80,0.2)", border: "1px solid rgba(0,255,136,0.06)", color: "rgba(224,232,255,0.7)" }}>
-              # {ch}
-            </div>
-          ))}
-        </div>
-
-        <div className="flex-1 rounded-xl p-6 flex flex-col items-center justify-center"
-          style={{ background: "rgba(0,40,80,0.1)", border: "1px solid rgba(0,255,136,0.06)", minHeight: 400 }}>
-          <Users className="w-12 h-12 text-[rgba(0,255,136,0.1)] mb-3" />
-          <p className="text-[rgba(0,255,136,0.2)] text-sm">选择频道开始交流</p>
-          <p className="text-[rgba(0,255,136,0.1)] text-xs mt-1">{FAMILY_PERSONAS.length} 位家人在线</p>
-        </div>
+    <div className="flex flex-col h-full" style={{ background: "radial-gradient(ellipse at center, rgba(0,255,136,0.03) 0%, rgba(4,8,20,1) 70%)" }}>
+      <div className="px-8 pt-6 pb-2 shrink-0">
+        <h1 className="text-[#e0f0ff] text-lg font-medium flex items-center gap-2">
+          <MessageSquare className="w-5 h-5 text-[#00FF88]" /> 交流中心
+        </h1>
+        <p className="text-[rgba(0,255,136,0.3)] text-sm mt-1">与 AI 家人群聊或私聊</p>
+      </div>
+      <div className="flex-1 px-4 pb-4">
+        <Suspense fallback={<div className="flex items-center justify-center h-full text-[rgba(0,255,136,0.3)]">加载中...</div>}>
+          <ChatContent />
+        </Suspense>
       </div>
     </div>
   )
