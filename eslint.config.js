@@ -28,8 +28,11 @@ export default [
       "node_modules/**",
       "public/**",
       "*.config.*",
+      "docs/**",
       "components/ui/sidebar.tsx",
       "components/kokonutui/**",
+      "components/ai-family/**",
+      "hooks/use-toast.ts",
     ],
   },
 ];
