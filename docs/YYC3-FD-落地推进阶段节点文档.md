@@ -418,16 +418,36 @@ lib/
 ## 附录：立即行动清单
 
 > **以下为不依赖任何前置条件的即时行动项，建议在本文档审阅后立即执行：**
+>
+> **最后更新**: 2026-07-15 P0 执行进度
 
 ```
-□ 1. 创建本地备份（阶段零 · 节点 0.1）
-□ 2. 添加缺失的 Logo 文件（阶段零 · 节点 0.2）
-□ 3. 同步 pnpm-workspace.yaml（阶段零 · 节点 0.2）
-□ 4. 修正 layout.tsx 标题（阶段零 · 节点 0.3）
-□ 5. 修正侧边栏遗留链接（阶段零 · 节点 0.3）
-□ 6. 初始化 Git 并推送（阶段一 · 节点 1.1）
-□ 7. 验证 CI/CD 流水线（阶段一 · 节点 1.2）
-□ 8. 配置 GitHub 仓库元数据（阶段一 · 节点 1.3）
+✅ 1. 创建本地备份（阶段零 · 节点 0.1）— 已完成，4.3MB tar.gz
+✅ 2. 添加缺失的 Logo 文件（阶段零 · 节点 0.2）— 已修复，使用 Web App 图标
+✅ 3. 同步 pnpm-workspace.yaml（阶段零 · 节点 0.2）— 已同步
+✅ 4. 修正 layout.tsx 标题（阶段零 · 节点 0.3）— 已修正为 YYC³
+✅ 5. 修正侧边栏遗留链接（阶段零 · 节点 0.3）— 已修正，kokonutui.com → /dashboard
+✅ 6. 初始化 Git 并推送（阶段一 · 节点 1.1）— 已完成，main 分支已推送
+⏳ 7. 上传 GitHub Actions workflow（阶段一 · 节点 1.2）— 需手动刷新 token scope
+□ 8. 配置 GitHub 仓库元数据（阶段一 · 节点 1.3）— 待执行
+```
+
+### 手动操作指引（节点 1.2 — workflow 上传）
+
+当前 `YYC-Cube` 账户的 OAuth Token 缺少 `workflow` scope，无法通过 git push 推送 `.github/workflows/` 文件。
+
+**解决方案**：在终端中执行以下命令刷新 token 权限：
+
+```bash
+gh auth refresh --scopes workflow
+```
+
+然后执行：
+
+```bash
+git add .github/workflows/deploy.yml
+git commit -m "ci: add GitHub Actions deploy workflow"
+git push origin main
 ```
 
 ---
